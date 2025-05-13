@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.16)
 
 option(ENABLE_TESTING "enable testing" off)
+message(STATUS "ENABLE_TESTING: ${ENABLE_TESTING}")
+
 option(BUILD_PYTHON "export python module" off)
+message(STATUS "BUILD_PYTHON: ${BUILD_PYTHON}")
+
 option(BUILD_MEX "export matlab mex file" off)
+message(STATUS "BUILD_MEX: ${BUILD_MEX}")
 
 
 
