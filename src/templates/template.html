@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Set character encoding and viewport for responsiveness -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>inja Template Example</title>
+</head>
+<body>
+    <!-- Display a variable -->
+    <h1>Hello, {{ name }}!</h1>
+
+    <!-- Conditional statement -->
+    {% if is_admin %}
+        <p>Welcome, Admin!</p>
+    {% else %}
+        <p>Welcome, Guest!</p>
+    {% endif %}
+
+    <!-- Loop through a list -->
+    <h2>Your Items:</h2>
+    <ul>
+        {% for item in items %}
+            <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Apply a filter to a variable -->
+    <p>Uppercase Name: {{ name | upper }}</p>
+</body>
+</html>
