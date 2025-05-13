@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ chart_title }}</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script> <!-- Optional: for download button -->
+    <script src="https://code.highcharts.com/modules/export-data.js"></script> <!-- Optional: for data download -->
+    <style>
+        body { font-family: sans-serif; }
+        #chartContainer {
+            width: 100%;
+            height: 500px;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="chartContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Highcharts.chart('chartContainer', {
+                chart: {
+                    type: '{{ chart_type }}'
+                },
+                title: {
+                    text: '{{ chart_title }}'
+                },
+                xAxis: {
+                    categories: {{ categories_as_string }},
+                    labels: {
+                        style: {
+                            fontFamily: 'sans-serif'
+                        }
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Value',
+                        style: {
+                            fontFamily: 'sans-serif'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            fontFamily: 'sans-serif'
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true,
+                    style: {
+                        fontFamily: 'sans-serif'
+                    }
+                },
+                plotOptions: {
+                    column: { // Or whatever chart type you are using
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: {{ series_data_as_string }},
+                credits: {
+                    enabled: false // Remove highcharts.com link
+                },
+                exporting: {
+                    buttons: {
+                        contextButton: {
+                            menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "separator", "downloadCSV", "downloadXLS"]
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
