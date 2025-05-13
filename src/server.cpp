@@ -1,5 +1,5 @@
-#include "third_party/cpp-httplib/httplib.h"
-#include "third_party/inja/inja.hpp"
+#include "httplib.h"
+#include "inja/inja.hpp"
 #include <fstream>
 #include <iostream>
 
@@ -26,6 +26,7 @@ int main() {
 
             nlohmann::json data;
             data["name"] = "World";
+            data["is_admin"] = true;
 
             std::string result = inja::render(template_str, data);
 

@@ -16,16 +16,5 @@
     {% else %}
         <p>Welcome, Guest!</p>
     {% endif %}
-
-    <!-- Loop through a list -->
-    <h2>Your Items:</h2>
-    <ul>
-        {% for item in items %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
-
-    <!-- Apply a filter to a variable -->
-    <p>Uppercase Name: {{ name | upper }}</p>
 </body>
 </html>

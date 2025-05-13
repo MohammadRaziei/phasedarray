@@ -147,7 +147,8 @@ target_include_directories(c${PROJECT_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/incl
 add_executable(server src/server.cpp)
 
 add_subdirectory(src/third_party/cpp-httplib)
-add_subdirectory(src/third_party/inja)
+add_subdirectory(src/third_party/nlohmann_json)
+# add_subdirectory(src/third_party/inja)
 
 target_include_directories(server PRIVATE
     ${CMAKE_SOURCE_DIR}/src/third_party/cpp-httplib
