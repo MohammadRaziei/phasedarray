@@ -6,10 +6,11 @@
 [submodule "src/third_party/inja"]
 	path = src/third_party/inja
 	url = https://github.com/pantor/inja.git
-	
+
 [submodule "src/third_party/cpp-httplib"]
 	path = src/third_party/cpp-httplib
 	url = https://github.com/yhirose/cpp-httplib.git
+	
 [submodule "src/third_party/nlohmann_json"]
 	path = src/third_party/nlohmann_json
 	url = https://github.com/nlohmann/json.git
