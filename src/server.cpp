@@ -36,8 +36,9 @@ int main() {
         }
     });
 
-    // راه‌اندازی وب‌سرور
-    std::cout << "Server running at http://localhost:8080" << std::endl;
-    svr.listen("0.0.0.0", 8080);
+    
+    int port = 8080;
+    std::cout << "Server running at http://localhost:" << port << std::endl;
+    svr.listen("0.0.0.0", port);
     return 0;
 }

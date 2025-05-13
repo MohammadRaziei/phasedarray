@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
+option(ENABLE_TESTING "enable testing" off)
 option(BUILD_PYTHON "export python module" off)
 option(BUILD_MEX "export matlab mex file" off)
 
@@ -148,7 +149,6 @@ add_executable(server src/server.cpp)
 
 add_subdirectory(src/third_party/cpp-httplib)
 add_subdirectory(src/third_party/nlohmann_json)
-# add_subdirectory(src/third_party/inja)
 
 target_include_directories(server PRIVATE
     ${CMAKE_SOURCE_DIR}/src/third_party/cpp-httplib
@@ -175,6 +175,7 @@ install(TARGETS c${PROJECT_NAME}
 )
 
 
+if(ENABLE_TESTING)
 enable_testing()
 
 
@@ -185,6 +186,7 @@ file(GLOB TEST_SOURCES ${PROJECT_SOURCE_DIR}/tests/cpp/test_*.cpp)
 # target_link_libraries(test_${PROJECT_NAME} PRIVATE c${PROJECT_NAME} gtest gtest_main pthread)
 # target_include_directories(test_${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/tests/cpp)
 
+endif()
 
 ## Enable the FetchContent module
 #include(FetchContent)
