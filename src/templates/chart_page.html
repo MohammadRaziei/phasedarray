@@ -67,7 +67,7 @@
 
 {% block content %}
 <h2 class="text-2xl font-bold mb-6">{% if chart_title %}{{ chart_title }}{% else %}Chart{% endif %}</h2>
-<div class="bg-gray-300 my-10" id="mother-chart">
+<div class="my-10" id="mother-chart">
     {% include "chart_component.html" %}
 </div>
 
@@ -110,7 +110,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // تنظیم دراپ‌داون نمایش داده‌ها
         const dataToggle = document.getElementById('dataToggle');
         const dataContent = document.getElementById('dataContent');
         const dataChevron = dataToggle ? dataToggle.querySelector('.chevron') : null;
@@ -141,23 +140,10 @@
             
             // Create embed code with correct dimensions
             const embedCode = document.getElementById('embedCode');
-            
-            // Calculate the correct width offset (must match margin-left)
-            const widthOffset = 0;
-            const halfWidthOffset = widthOffset / 2;
-            
+                        
             // Create iframe code that properly focuses on the chart
-            const iframeCode = `<div style="width: 100%; max-width: ${Math.round(rect.width)}px; margin: 0 auto; overflow: hidden;">
-    <iframe 
-        src="${window.location.origin}${window.location.pathname}" 
-        style="width: ${Math.round(rect.width) + widthOffset}px; 
-               height: ${Math.round(rect.height) + topPosition}px; 
-               margin-top: -${topPosition}px; 
-               margin-left: -${leftPosition}px; 
-               border: none; 
-               overflow: hidden;"
-        scrolling="no">
-    </iframe>
+            const iframeCode = `<div style="width: 100%; margin: 0 auto; overflow: hidden;">
+    <iframe src="${window.location.origin}${window.location.pathname}" style="width: calc(100% + ${Math.round(2*leftPosition)}px);  height: ${Math.round(rect.height + topPosition - 4)}px; margin-top: -${Math.round(topPosition)}px; margin-left: -${Math.round(leftPosition)}px; margin-right: -${Math.round(leftPosition)}px; border: none; overflow: hidden;" scrolling="no"> </iframe>
 </div>`;
             
             embedCode.textContent = iframeCode;
