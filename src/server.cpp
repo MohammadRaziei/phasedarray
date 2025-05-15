@@ -41,7 +41,6 @@ nlohmann::json createChartData() {
 
 int main() {
     httplib::Server svr;
-    inja::Environment env("src/templates/");
 
     svr.Get("/api/hello", [](const httplib::Request& req, httplib::Response& res) {
         nlohmann::json data;
@@ -94,8 +93,9 @@ int main() {
     });
 
     // Route for displaying chart
-    svr.Get("/chart", [&env](const httplib::Request& req, httplib::Response& res) {
+    svr.Get("/chart", [](const httplib::Request& req, httplib::Response& res) {
         try {
+            inja::Environment env("src/templates/");
             nlohmann::json data;
             data["page_title"] = "Sales Chart";
             data["header_title"] = "Sales Chart";
