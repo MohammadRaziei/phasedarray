@@ -5,35 +5,11 @@
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() { 
-        //
+    document.addEventListener('DOMContentLoaded', function() {
         {% if data %}
-            const chartData = JSON.parse('{{ data }}');
-            renderChart(chartData);
-        {% else %}
-            fetchChartData();
+            renderChart({{ data }});
         {% endif %}
-        //
     });
-
-    function fetchChartData() {
-        const apiUrl = '{{ url_api }}';
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error fetching data');
-                }
-                return response.json();
-            })
-            .then(data => {
-                renderChart(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('chartContainer').innerHTML = 
-                    '<div class="text-center text-red-500 p-4">Error loading chart</div>';
-            });
-    }
 
     function renderChart(data) {
         Highcharts.chart('chartContainer', {
