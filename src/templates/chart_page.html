@@ -1,0 +1,6 @@
+{% extends "frame_base.html" %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">{% if chart_title %}{{ chart_title }}{% else %}Chart{% endif %}</h2>
+{% include "chart_component.html" %}
+{% endblock %}

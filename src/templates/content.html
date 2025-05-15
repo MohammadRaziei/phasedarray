@@ -1,0 +1,20 @@
+<!-- templates/content.html -->
+{% extends "base.html" %}
+
+{% block title %}
+    Blog Post - My Website
+{% endblock %}
+
+{% block content %}
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Welcome to My Blog!</h2>
+        <p class="text-gray-700 mb-4">
+            This is the main content of the page. Here you can write your blog post or any other information.
+        </p>
+        <ul class="list-disc list-inside text-gray-700">
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+        </ul>
+    </div>
+{% endblock %}

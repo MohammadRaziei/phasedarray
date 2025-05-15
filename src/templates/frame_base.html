@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page_title %}{{ page_title }}{% else %}Dashboard{% endif %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <h1 class="text-xl font-semibold">{% if header_title %}{{ header_title }}{% else %}Management System{% endif %}</h1>
+                <nav>
+                    <ul class="flex space-x-4">
+                        <li><a href="/" class="px-3 py-2 rounded hover:bg-gray-100">Home</a></li>
+                        <li><a href="/chart" class="px-3 py-2 rounded hover:bg-gray-100">Charts</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="bg-white shadow rounded-lg p-6">
+                    {% block content %}
+                    <!-- Page content will be inserted here -->
+                    {% endblock %}
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white shadow-sm mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-gray-500">
+                <p>{% if footer_text %}{{ footer_text }}{% else %}All rights reserved © 2024{% endif %}</p>
+            </div>
+        </footer>
+    </div>
+    
+    {% block scripts %}
+    <!-- Additional scripts will be inserted here -->
+    {% endblock %}
+</body>
+</html>

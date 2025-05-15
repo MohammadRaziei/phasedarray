@@ -1,0 +1,98 @@
+<div id="chartContainer" class="w-full h-[500px] max-w-[800px] mx-auto my-5"></div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() { 
+        //
+        {% if data %}
+            const chartData = JSON.parse('{{ data }}');
+            renderChart(chartData);
+        {% else %}
+            fetchChartData();
+        {% endif %}
+        //
+    });
+
+    function fetchChartData() {
+        const apiUrl = '{{ url_api }}';
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error fetching data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderChart(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('chartContainer').innerHTML = 
+                    '<div class="text-center text-red-500 p-4">Error loading chart</div>';
+            });
+    }
+
+    function renderChart(data) {
+        Highcharts.chart('chartContainer', {
+            chart: {
+                type: data.chart_type || 'column'
+            },
+            title: {
+                text: data.chart_title || 'Chart'
+            },
+            xAxis: {
+                categories: data.categories || [],
+                labels: {
+                    style: {
+                        fontFamily: 'sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: data.y_axis_title || 'Value',
+                    style: {
+                        fontFamily: 'sans-serif'
+                    }
+                },
+                labels: {
+                    style: {
+                        fontFamily: 'sans-serif'
+                    }
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true,
+                style: {
+                    fontFamily: 'sans-serif'
+                }
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: data.series || [],
+            credits: {
+                enabled: false
+            },
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        menuItems: ["downloadPNG", "downloadJPEG", "downloadPDF", "downloadSVG", "separator", "downloadCSV", "downloadXLS"]
+                    }
+                }
+            }
+        });
+    }
+</script>
