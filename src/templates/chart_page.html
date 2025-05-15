@@ -1,6 +1,170 @@
 {% extends "frame_base.html" %}
 
+{% block head %}
+<!-- Add Prism.js for syntax highlighting -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+<style>
+    .data-container {
+        margin-top: 2rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    
+    .data-header {
+        background-color: #f8fafc;
+        padding: 1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .data-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+    
+    .data-content.open {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    
+    .chevron {
+        transition: transform 0.3s ease;
+    }
+    
+    .chevron.open {
+        transform: rotate(180deg);
+    }
+    
+    pre[class*="language-"] {
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .chart-info {
+        margin-bottom: 1rem;
+        padding: 0.75rem;
+        background-color: #f3f4f6;
+        border-radius: 0.5rem;
+        font-family: monospace;
+    }
+    
+    .iframe-container {
+        margin-bottom: 1rem;
+    }
+    
+    .iframe-code {
+        font-family: monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <h2 class="text-2xl font-bold mb-6">{% if chart_title %}{{ chart_title }}{% else %}Chart{% endif %}</h2>
-{% include "chart_component.html" %}
+<div class="bg-gray-300 my-10" id="mother-chart">
+    {% include "chart_component.html" %}
+</div>
+
+<!-- Chart Embed Code Section -->
+<div class="data-container">
+    <div class="data-header" id="embedToggle">
+        <h3 class="font-semibold">Embed Code</h3>
+        <svg class="chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </div>
+    <div class="data-content" id="embedContent">
+        <div class="iframe-container">
+            <pre><code class="language-html" id="embedCode"><!-- کد جاسازی اینجا قرار می‌گیرد --></code></pre>
+        </div>
+    </div>
+</div>
+
+{% if data %}
+<!-- Data display section -->
+<div class="data-container">
+    <div class="data-header" id="dataToggle">
+        <h3 class="font-semibold">Show Data</h3>
+        <svg class="chevron w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+    </div>
+    <div class="data-content" id="dataContent">
+        <pre><code class="language-json" id="jsonData">{{ data }} </code></pre>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<!-- Add Prism.js for syntax highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // تنظیم دراپ‌داون نمایش داده‌ها
+        const dataToggle = document.getElementById('dataToggle');
+        const dataContent = document.getElementById('dataContent');
+        const dataChevron = dataToggle ? dataToggle.querySelector('.chevron') : null;
+        
+        if (dataToggle) {
+            dataToggle.addEventListener('click', function() {
+                dataContent.classList.toggle('open');
+                dataChevron.classList.toggle('open');
+            });
+        }
+        
+        const embedToggle = document.getElementById('embedToggle');
+        const embedContent = document.getElementById('embedContent');
+        const embedChevron = embedToggle.querySelector('.chevron');
+        
+        embedToggle.addEventListener('click', function() {
+            embedContent.classList.toggle('open');
+            embedChevron.classList.toggle('open');
+        });
+        
+        const motherChart = document.getElementById('mother-chart');
+        if (motherChart) {
+            const rect = motherChart.getBoundingClientRect();
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            const topPosition = Math.round(rect.top + scrollTop);
+            const leftPosition = Math.round(rect.left + scrollLeft);
+            
+            // Create embed code with correct dimensions
+            const embedCode = document.getElementById('embedCode');
+            
+            // Calculate the correct width offset (must match margin-left)
+            const widthOffset = 0;
+            const halfWidthOffset = widthOffset / 2;
+            
+            // Create iframe code that properly focuses on the chart
+            const iframeCode = `<div style="width: 100%; max-width: ${Math.round(rect.width)}px; margin: 0 auto; overflow: hidden;">
+    <iframe 
+        src="${window.location.origin}${window.location.pathname}" 
+        style="width: ${Math.round(rect.width) + widthOffset}px; 
+               height: ${Math.round(rect.height) + topPosition}px; 
+               margin-top: -${topPosition}px; 
+               margin-left: -${leftPosition}px; 
+               border: none; 
+               overflow: hidden;"
+        scrolling="no">
+    </iframe>
+</div>`;
+            
+            embedCode.textContent = iframeCode;
+        }
+        
+        // Highlight code with Prism.js
+        Prism.highlightAll();
+    });
+</script>
 {% endblock %}
