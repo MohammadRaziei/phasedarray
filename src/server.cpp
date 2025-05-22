@@ -41,6 +41,12 @@ nlohmann::json createChartData() {
 
 int main() {
     httplib::Server svr;
+    inja::Environment env("src/templates/");
+    env.add_callback("json.dumps", 1, [](inja::Arguments& args) {
+        nlohmann::json data = args.at(0)->get<nlohmann::json>(); // Adapt the index and type of the argument
+        return data.dump(2);
+    });
+
 
     svr.Get("/api/hello", [](const httplib::Request& req, httplib::Response& res) {
         nlohmann::json data;
@@ -64,13 +70,12 @@ int main() {
         }
     });
 
-    svr.Get("/content", [](const httplib::Request& req, httplib::Response& res) {
+    svr.Get("/content", [&env](const httplib::Request& req, httplib::Response& res) {
         try {
             // Corrected code:
-            inja::Environment env; // Create an Inja environment
             nlohmann::json data;   // Prepare data for the template (if any)
             
-            std::string result = env.render_file("src/templates/content.html", data);
+            std::string result = env.render_file("content.html", data);
 
             res.set_content(result, "text/html");
         } catch (const std::exception& e) {
@@ -93,9 +98,8 @@ int main() {
     });
 
     // Route for displaying chart
-    svr.Get("/chart", [](const httplib::Request& req, httplib::Response& res) {
+    svr.Get("/chart", [&env](const httplib::Request& req, httplib::Response& res) {
         try {
-            inja::Environment env("src/templates/");
             nlohmann::json data;
             data["page_title"] = "Sales Chart";
             data["header_title"] = "Sales Chart";
